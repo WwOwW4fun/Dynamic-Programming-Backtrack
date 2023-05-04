@@ -65,9 +65,7 @@ int main(){
 	}
 	unsigned long long res =0;
 	for(int i =0;i<=(1<<n)-1;i++)
-	{
 		res+=f[m][i];
-	}
-    cout << res << endl;
+  	  cout << res << endl;
 	}
 }
