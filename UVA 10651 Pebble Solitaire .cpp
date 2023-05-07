@@ -30,40 +30,47 @@ using namespace std;
 #define AND(a,b) ((a) & (b))
 #define OR(a,b) ((a) | (b))
 #define XOR(a,b) ((a) ^ (b))
-
-const int mod = 1000000007;
-int n, m;
-int visited[200][20][4000];
-int solve(int id, int last, int bitmask)
+int ans;
+char a[20];
+void backtrack(int cnt)
 {
-    if(id >= m) return 0;
-    if(visited[id][last][bitmask] != -1) return visited[id][last][bitmask];
-    int ans = 0;
-    if(bitmask == (1 << n) - 1) ans++;
-    for(int i = last - 1; i <= last + 1; i += 2)
+    ans= min (cnt,ans);
+    for0(i,0,12)
     {
-        if(i < 0 || i >= n) continue;
-       ans += solve(id + 1, i, bitmask | (1 << i));
-       ans %= mod;
+        if(a[i] == 'o')
+        {
+            if(i >= 2 and  a[i-1] == 'o' and a[i-2] == '-')
+            {
+                a[i-2] = 'o'; a[i - 1] = '-' ; a[i] = '-';
+                backtrack(cnt-1);
+                a[i-2] = '-'; a[i-1] = 'o';a[i] = 'o';
+            }
+            if(i <= 9 and  a[i+1] == 'o' and a[i+2] == '-')
+            {
+                a[i+2] = 'o'; a[i+1] = '-' ; a[i] = '-';
+                backtrack(cnt-1);
+                a[i+2] = '-'; a[i+1] = 'o' ; a[i] ='o';
+            }
+        }
     }
-    visited[id][last][bitmask] = ans;
-    return ans;
-}
-void input()
-{
-    cin >> n >> m;
-    memset(visited,-1,sizeof(visited));
-    ll res = 0;
-    for0(i,1,n)
-    {
-      res += solve(0,i,(1 << i));
-      res %= mod;
-    }
-    cout << res << endl;
 }
 int main()
 {
-    int tc; cin >> tc;
-    while(tc --)
-        input();
+    int n; cin >> n;
+    while(n--)
+    {
+        int number = 0;
+        for0(i,0,12)
+        {
+            cin >> a[i];
+            if(a[i] == 'o')
+            {
+                number++;
+            }
+        }
+        ans = INT_MAX;
+        backtrack(number);
+        cout << ans << endl;
+
+    }
 }
