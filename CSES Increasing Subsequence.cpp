@@ -31,36 +31,35 @@ using namespace std;
 #define OR(a,b) ((a) | (b))
 #define XOR(a,b) ((a) ^ (b))
 
-const int Max = 2e5 + 7;
-int dp[Max];
-int k[Max];
-int d[Max];
- 
-int main(){
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++){
-        cin >> k[i];
-    }
-    for (int i = 0; i < n; i++){
-        d[i] = INT_MAX;
-    }
-    for (int i = 0; i < n; i++){
-        int l = 0, r = n - 1;
-        while (l <= r){
-            int mid = (l + r)/2;
-            if (d[mid] < k[i]){
-                l = mid + 1;
-            } else {
-                r = mid - 1;
-            }
-        }
-        dp[i] = l;
-        d[l] = k[i];
-    }
-    int res = 0;
-    for (int i = 0; i < n; i++){
-        res = max(res, dp[i]);
-    }
-    cout << res + 1;
+int rectangle(int n, int m)
+{	
+	int f[n+1][m+1];
+	for(int i = 0 ;i <=n;i++)
+	{
+		for(int j = 0;j<=m;j++)
+		{
+			f[i][j]=1e9;
+		}
+	}
+	for(int i = 0 ;i <= n ;i++)
+	{
+		for(int j = 0 ;j<= m;j++)
+		{   if(i==j) f[i][j]=0;
+			for(int k = 0;k <i;k++)
+			{
+					f[i][j]=min(f[i][j],f[i-k][j]+f[k][j]+1);
+				
+			}
+				for(int k = 0;k <j;k++)
+			{
+				f[i][j]=min(f[i][j],f[i][j-k]+f[i][k]+1);
+			}
+			
+		}
+	}
+	return f[n][m];
+}
+int main () {
+	int n,m; cin >> n>> m;
+	cout << rectangle(n,m);
 }
